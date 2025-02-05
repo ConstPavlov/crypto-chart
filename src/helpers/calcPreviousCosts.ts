@@ -20,7 +20,6 @@ export const calcPreviousCosts = (selectBot: Bot, period: keyof Bot) => {
       ? d3.timeHours(startDate, endDate) // Генерируем список часов
       : d3.timeDays(startDate, endDate);
 
-  console.log(dates);
   const previousData = dates.map((date, idx) => {
     const timeAgo = dates.length - 1 - idx;
 

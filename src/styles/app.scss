@@ -4,8 +4,6 @@
 body {
   font-weight: normal;
   background-color: $background--body;
-  padding: 0px 20px;
-  box-sizing: border-box;
   color: white;
   // background-image: url(/assets/6IReoVKhwx0ef6f814.jpeg)
 }
@@ -16,7 +14,7 @@ body {
 
 .app {
   max-width: 750px;
-  margin: 0 auto;
+  // margin: 0 auto;
   background-color: #161c2c;
   position: relative;
   overflow-x: hidden;

@@ -1,24 +1,26 @@
+$active_tool_color: #ffff;
 .sidebar {
   z-index: 2;
   position: fixed;
   left: 0;
   right: 0;
   bottom: 0;
+  right: 0;
   display: flex;
   justify-content: center;
   align-items: flex-end;
   width: 100%;
   height: 70px;
+  // max-width: 750px;
 
   &__inner {
     width: 100%;
-    max-width: 425px;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0px 40px;
-    background: rgba(56, 196, 224, 1);
+    padding: 4px 40px 8px 8px;
+    background: #232c3e;
     border-left: none;
     border-right: none;
   }
@@ -29,15 +31,62 @@
     align-items: center;
     text-align: center;
   }
+  .active_tool {
+    color: #fff; // Применяется ко всему внутри
+
+    .ico {
+      color: inherit; // Наследует цвет от родителя
+    }
+
+    .title {
+      color: inherit; // Наследует цвет от родителя
+    }
+  }
+  .link {
+    padding: 0px 16px;
+    &:hover {
+      .ico {
+        color: rgb(151, 151, 146);
+      }
+      .title {
+        color: rgb(151, 151, 146);
+      }
+    }
+
+    @media (max-width: 660px) {
+      padding: 0px 4px;
+    }
+  }
   .ico {
-    display: block; /* Убедитесь, что иконка занимает всю ширину */
-    font-size: 20px;
+    color: #546076;
+    display: block;
+    font-size: 37px;
     text-align: center;
     margin-bottom: 5px;
+    transition: color 0.4s ease-in-out 0s;
+    // &:hover {
+    //   color: rgb(151, 151, 146);
+    // }
+    @media (max-width: 435px) {
+      font-size: 32px;
+    }
   }
   .title {
+    color: #535f75;
     line-height: 14px;
-    font-size: 10px;
+    font-size: 16px;
+    font-weight: 500;
     text-align: center;
+    transition: color 0.4s ease-in-out 0s;
+    // &:hover {
+    //   color: rgb(151, 151, 146);
+    // }
+
+    @media (max-width: 660px) {
+      font-size: 14px;
+    }
+    @media (max-width: 435px) {
+      font-size: 10px;
+    }
   }
 }
