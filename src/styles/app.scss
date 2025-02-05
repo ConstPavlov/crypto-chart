@@ -1,0 +1,40 @@
+@import './normalize.scss';
+@import './variables.scss';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+body {
+  font-weight: normal;
+  background-color: $background--body;
+  padding: 0px 20px;
+  box-sizing: border-box;
+  color: white;
+  // background-image: url(/assets/6IReoVKhwx0ef6f814.jpeg)
+}
+
+.logo {
+  font-size: 1.4rem;
+}
+
+.app {
+  max-width: 750px;
+  margin: 0 auto;
+  background-color: #161c2c;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  margin-bottom: 100px;
+}
+
+.app_login {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+.wrapper {
+  margin-top: 100px;
+}

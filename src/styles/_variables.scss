@@ -1,0 +1,21 @@
+$background--body: #232c3e;
+$black: #000;
+$primary: #0b5cdf;
+$gradient_btn_primary: linear-gradient(to top, rgb(10, 31, 88), $primary);
+$background--two: linear-gradient(to bottom right, rgb(25, 44, 37), #2962f2);
+$border--image: linear-gradient(
+    to right,
+    rgb(129, 207, 226),
+    rgba(61, 6, 42, 1)
+  )
+  1;
+$shadow-btn-1: 1px 2px 15px 3px rgba(255, 255, 255, 0.2);
+$shadow-btn-hover: 1px 2px 16px 5px rgba(197, 204, 255, 0.4);
+$--btn-text: #ffff;
+$--text-gray: #a5b1b9;
+$--overlay-background: rgba(0, 0, 0, 0.7);
+$--overlay-z-index: 1;
+$--popup-transition: transform 0.3s;
+$--popup-background: #1c1c1e;
+
+$bisque: rgb(220, 236, 245);
