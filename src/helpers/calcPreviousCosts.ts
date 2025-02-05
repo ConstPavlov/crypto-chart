@@ -17,7 +17,7 @@ export const calcPreviousCosts = (selectBot: Bot, period: keyof Bot) => {
   const [startDate, endDate] = updateYPeriod(period);
   const dates =
     period === '24h' || period === '7d'
-      ? d3.timeHours(startDate, endDate) // Генерируем список часов
+      ? d3.timeHours(startDate, endDate)
       : d3.timeDays(startDate, endDate);
 
   const previousData = dates.map((date, idx) => {
@@ -46,7 +46,7 @@ export const calcPreviousCosts = (selectBot: Bot, period: keyof Bot) => {
       cost = costBot / (1 + percentageChanges['all_time'] / 100);
     }
 
-    const fluctuation = (Math.random() - 0.5) * 0.15 * cost; // ±5% колебания
+    const fluctuation = (Math.random() - 0.5) * 0.15 * cost;
     cost += fluctuation;
 
     return {

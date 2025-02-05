@@ -10,8 +10,8 @@ import styles from './Chart.module.scss';
 
 interface ChartProps {
   gladias: Bot[];
-  selectedPeriod: keyof Bot; // Период, например, '24h', '7d', '30d', etc.
-  selectedGladias: string; // Имя выбранного гладиаса
+  selectedPeriod: keyof Bot;
+  selectedGladias: string;
   width?: number;
   height?: number;
   margin?: { top: number; right: number; bottom: number; left: number };
@@ -78,16 +78,14 @@ const Chart: React.FC<ChartProps> = ({
     svg.selectAll('*').remove();
 
     // Создаем clipPath для обрезки линий сетки
-    svg
-      .select('#clip') // Проверяем, есть ли уже clipPath
-      .remove();
+    svg.select('#clip').remove();
     svg
       .append('defs')
       .append('clipPath')
       .attr('id', 'grid-clip')
       .append('rect')
       .attr('x', margin.left)
-      .attr('y', margin.top) // Начало от верхней границы графика
+      .attr('y', margin.top)
       .attr('width', width - margin.left - margin.right)
       .attr('height', height - margin.top - margin.bottom);
 
@@ -99,12 +97,12 @@ const Chart: React.FC<ChartProps> = ({
       .call(
         d3
           .axisBottom(x)
-          .tickSize(-height + margin.top + 50) // Линии до верхней части графика
+          .tickSize(-height + margin.top + 50)
           .tickFormat('' as any),
       )
       .selectAll('line')
-      .attr('stroke', '#e0e0e0') // Бледный цвет
-      .attr('stroke-width', 0.5) // Тонкие линии
+      .attr('stroke', '#e0e0e0')
+      .attr('stroke-width', 0.5)
       .attr('stroke-dasharray', '2,2')
       .selectAll('.domain')
       .attr('stroke', 'none');
@@ -122,12 +120,12 @@ const Chart: React.FC<ChartProps> = ({
       .call(
         d3
           .axisLeft(y)
-          .tickSize(-width + margin.left + margin.right) // Линии на всю ширину
+          .tickSize(-width + margin.left + margin.right)
           .tickFormat('' as any),
       )
       .selectAll('line')
-      .attr('stroke', '#e0e0e044') // Бледный цвет
-      .attr('stroke-width', 0.5) // Тонкие линии
+      .attr('stroke', '#e0e0e044')
+      .attr('stroke-width', 0.5)
       // .attr('stroke-dasharray', '2,2')
       // .attr('clip-path', 'url(#grid-clip)')
       .filter((_, i, nodes) => i !== nodes.length);
@@ -145,8 +143,8 @@ const Chart: React.FC<ChartProps> = ({
     const tickFormatFunction = (date: Date | d3.NumberValue): string => {
       if (date instanceof Date) {
         return selectedPeriod === '24h'
-          ? d3.timeFormat('%H:%M')(date) // Формат времени для 24h
-          : d3.timeFormat('%b %d')(date); // Формат даты для остальных периодов
+          ? d3.timeFormat('%H:%M')(date)
+          : d3.timeFormat('%b %d')(date);
       }
       return '';
     };
@@ -159,18 +157,18 @@ const Chart: React.FC<ChartProps> = ({
           .axisBottom(x)
           .ticks(
             selectedPeriod === '24h'
-              ? d3.timeHour.every(4) // Для 24h — тики каждые 3 часа
+              ? d3.timeHour.every(4)
               : selectedPeriod === '7d'
-              ? d3.timeDay.every(1) // Для 7d — тики каждый день
+              ? d3.timeDay.every(1)
               : selectedPeriod === '30d'
-              ? d3.timeDay.every(4) // Для 30d — тики каждые 5 дней
+              ? d3.timeDay.every(4)
               : d3.timeMonth.every(2),
           )
-          .tickFormat(tickFormatFunction), // Используем функцию с правильной сигнатурой
+          .tickFormat(tickFormatFunction),
       )
       .selectAll('path')
       .attr('stroke', 'none')
-      .selectAll('text') // Настройка подписей
+      .selectAll('text')
       .style('text-anchor', 'end')
       .attr('dx', '-0.8em')
       .attr('dy', '0.15em')
@@ -227,9 +225,9 @@ const Chart: React.FC<ChartProps> = ({
 
     svg
       .append('circle')
-      .attr('cx', x(midValue.date)) // Позиция по X
-      .attr('cy', y(midValue.cost)) // Позиция по Y
-      .attr('r', 5) // Радиус кружка
+      .attr('cx', x(midValue.date))
+      .attr('cy', y(midValue.cost))
+      .attr('r', 5)
       .attr('fill', 'white');
   }, [gladias, selectedPeriod, selectedGladias, margin]);
 

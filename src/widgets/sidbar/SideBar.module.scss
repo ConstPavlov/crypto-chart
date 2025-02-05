@@ -32,14 +32,14 @@ $active_tool_color: #ffff;
     text-align: center;
   }
   .active_tool {
-    color: #fff; // Применяется ко всему внутри
+    color: #fff;
 
     .ico {
-      color: inherit; // Наследует цвет от родителя
+      color: inherit;
     }
 
     .title {
-      color: inherit; // Наследует цвет от родителя
+      color: inherit;
     }
   }
   .link {
