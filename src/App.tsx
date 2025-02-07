@@ -5,7 +5,7 @@ import PageLayout from './layouts/BaseLayout';
 function App() {
   React.useEffect(() => {});
   return (
-    <div className="App">
+    <div className="body">
       <PageLayout />
       <Outlet />
     </div>

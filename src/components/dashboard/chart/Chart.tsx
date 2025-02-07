@@ -1,10 +1,10 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import moment from 'moment';
-import { Bot } from '../../shared';
-import { generateData } from '../../helpers/generateBotData';
-import { updateYPeriod } from '../../helpers/updateYPeriod';
-import { calcPreviousCosts } from '../../helpers/calcPreviousCosts';
+import { Bot } from '../../../shared';
+import { generateData } from '../../../helpers/generateBotData';
+import { updateYPeriod } from '../../../helpers/updateYPeriod';
+import { calcPreviousCosts } from '../../../helpers/calcPreviousCosts';
 import { style } from 'd3';
 import styles from './Chart.module.scss';
 
@@ -36,13 +36,14 @@ const Chart: React.FC<ChartProps> = ({
     const updateSize = () => {
       if (containerRef.current) {
         const { width } = containerRef.current.getBoundingClientRect();
+        const isMobile = width <= 600;
+        const heightFactor = isMobile ? 0.6 : 0.5;
         setDimensions({
           width,
-          height: width * 0.5, // Соотношение 2:1
+          height: width * heightFactor,
         });
       }
     };
-
     updateSize();
     window.addEventListener('resize', updateSize);
     return () => window.removeEventListener('resize', updateSize);
@@ -55,7 +56,6 @@ const Chart: React.FC<ChartProps> = ({
 
     if (!selectedGladi) return;
 
-    const [startDate, endDate] = updateYPeriod(selectedPeriod);
     const { width, height } = dimensions;
 
     const costData = calcPreviousCosts(selectedGladi, selectedPeriod);
@@ -79,15 +79,6 @@ const Chart: React.FC<ChartProps> = ({
 
     // Создаем clipPath для обрезки линий сетки
     svg.select('#clip').remove();
-    svg
-      .append('defs')
-      .append('clipPath')
-      .attr('id', 'grid-clip')
-      .append('rect')
-      .attr('x', margin.left)
-      .attr('y', margin.top)
-      .attr('width', width - margin.left - margin.right)
-      .attr('height', height - margin.top - margin.bottom);
 
     // Сетка для оси X (вертикальные линии)
     svg
@@ -97,19 +88,33 @@ const Chart: React.FC<ChartProps> = ({
       .call(
         d3
           .axisBottom(x)
-          .tickSize(-height + margin.top + 50)
+          .tickSize(-height + margin.top * 2.5)
           .tickFormat('' as any),
       )
       .selectAll('line')
-      .attr('stroke', '#e0e0e0')
+      .attr('stroke', '#1e3b5e')
       .attr('stroke-width', 0.5)
-      .attr('stroke-dasharray', '2,2')
-      .selectAll('.domain')
-      .attr('stroke', 'none');
-    // .attr('clip-path', 'url(#grid-clip)'); // Обрезаем линии по clipPath
-    // .filter((_, i, nodes) => i !== nodes.length - 1);
+      .attr('stroke-dasharray', '2,2');
 
-    svg.selectAll('.grid line').attr('clip-path', 'url(#grid-clip)');
+    // Убираем линии выше оси X (если они выходят за пределы графика)
+    // gridLines
+    //   .filter(function () {
+    //     const y2 = d3.select(this).attr('y2');
+    //     return y2 ? parseFloat(y2) < margin.top : false; // Вернется false, если y2 не определено
+    //   })
+    //   .remove();
+
+    // svg
+    //   .append('defs')
+    //   .append('clipPath')
+    //   .attr('id', 'grid-clip')
+    //   .append('rect')
+    //   .attr('x', margin.left)
+    //   .attr('y', margin.top)
+    //   .attr('width', width - margin.left - margin.right)
+    //   .attr('height', height - margin.top - margin.bottom);
+    // Убираем линии и оси X,Y
+    // svg.selectAll('.grid line').attr('clip-path', 'url(#grid-clip)');
     svg.selectAll('.domain').remove();
 
     // Сетка для оси Y (горизонтальные линии)
@@ -125,11 +130,12 @@ const Chart: React.FC<ChartProps> = ({
       )
       .selectAll('line')
       .attr('stroke', '#e0e0e044')
-      .attr('stroke-width', 0.5)
-      // .attr('stroke-dasharray', '2,2')
-      // .attr('clip-path', 'url(#grid-clip)')
-      .filter((_, i, nodes) => i !== nodes.length);
+      .attr('stroke-width', 0.5);
+    // .attr('stroke-dasharray', '2,2')
+    // .attr('clip-path', 'url(#grid-clip)')
+    // .filter((_, i, nodes) => i !== nodes.length);
 
+    // убирает рамку графика
     svg
       .selectAll('g')
       .filter((_, i, nodes) => {
@@ -149,43 +155,33 @@ const Chart: React.FC<ChartProps> = ({
       return '';
     };
 
-    svg
+    // Меняем тики и стили
+    const xAxis = d3
+      .axisBottom(x)
+      .ticks(
+        selectedPeriod === '24h'
+          ? d3.timeHour.every(4)
+          : selectedPeriod === '7d'
+          ? d3.timeDay.every(1)
+          : selectedPeriod === '30d'
+          ? d3.timeDay.every(4)
+          : d3.timeMonth.every(3),
+      )
+      .tickFormat(tickFormatFunction);
+
+    const xAxisGroup = svg
       .append('g')
       .attr('transform', `translate(0,${height - margin.bottom})`)
-      .call(
-        d3
-          .axisBottom(x)
-          .ticks(
-            selectedPeriod === '24h'
-              ? d3.timeHour.every(4)
-              : selectedPeriod === '7d'
-              ? d3.timeDay.every(1)
-              : selectedPeriod === '30d'
-              ? d3.timeDay.every(4)
-              : d3.timeMonth.every(2),
-          )
-          .tickFormat(tickFormatFunction),
-      )
-      .selectAll('path')
-      .attr('stroke', 'none')
-      .selectAll('text')
-      .style('text-anchor', 'end')
-      .attr('dx', '-0.8em')
-      .attr('dy', '0.15em')
-      .attr('transform', 'rotate(-45)');
+      .call(xAxis);
 
-    svg
-      .append('g')
-      .attr('transform', `translate(${margin.left},0)`)
-      .call(
-        d3
-          .axisLeft(y)
-          .tickSize(0)
-          .tickFormat('' as any),
-      )
-      .selectAll('path')
-      .attr('stroke', 'none');
+    xAxisGroup.selectAll('.tick line').remove(); // Убираем белые отметки
+    xAxisGroup.select('.domain').remove(); // Убираем линию оси X
 
+    xAxisGroup.selectAll('text').attr('class', styles.chartText);
+
+    // .style('fill', 'white')
+    // .style('font-size', '17px');
+    // .attr('class', styles.chartText);
     // Градиент
     const defs = svg.append('defs');
     const gradient = defs
@@ -214,14 +210,26 @@ const Chart: React.FC<ChartProps> = ({
       .y1(d => y(d.cost))
       .curve(d3.curveBasis);
 
+    // делаю заливку под кривую область
+    svg
+      .append('path')
+      .datum(costData)
+      .attr('fill', 'url(#gradient')
+      .attr('d', area);
+
+    // обозначаю stroke только у кривой
+    const line = d3
+      .line<{ date: Date; cost: number }>()
+      .x(d => x(d.date))
+      .y(d => y(d.cost));
     svg
       .append('path')
       .datum(costData)
       .attr('fill', 'url(#gradient)')
       .attr('stroke', '#0093ff')
       .attr('stroke-width', 2)
-      .attr('d', area)
-      .attr('clip-path', 'url(#clip)');
+      .attr('d', line);
+    // .attr('clip-path', 'url(#clip)');
 
     svg
       .append('circle')
@@ -233,12 +241,13 @@ const Chart: React.FC<ChartProps> = ({
 
   return (
     <div ref={containerRef} className={styles.container}>
+      <span className={styles.percent}>+32.6%</span>
       <svg
+        preserveAspectRatio="xMinYMin meet"
         ref={svgRef}
         className={styles.chart}
-        viewBox={`0 0 ${containerRef.current?.clientWidth || 750} ${
-          (containerRef.current && containerRef.current?.clientWidth * 0.5) ||
-          375
+        viewBox={`0 0 ${dimensions.width || 750} ${
+          dimensions.height + 50 || 375
         }`}
       />
     </div>

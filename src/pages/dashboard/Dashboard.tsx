@@ -1,11 +1,13 @@
 import React from 'react';
-import Chart from '../../components/chart/Chart';
+import Chart from '../../components/dashboard/chart/Chart';
 import styles from './Dashboard.module.scss';
 import jsonFile from '../../data.json';
 import { Bot } from '../../shared';
+import Bots from '../../widgets/bots/Bots';
+import TotalAssets from '../../components/dashboard/total-assets/TotalAssets';
 
 const Dashboard = () => {
-  const [period, setPeriod] = React.useState<keyof Bot>('30d');
+  const [period, setPeriod] = React.useState<keyof Bot>('all_time');
   const [currentBot, setCurrentBot] = React.useState<string>('blue_bot');
   const [bots, setBots] = React.useState<Bot[]>([]);
 
@@ -17,8 +19,7 @@ const Dashboard = () => {
 
   return (
     <div className={styles.wrapper}>
-      <h1>Dashboard</h1>
-
+      <TotalAssets />
       {bots && bots.length > 0 ? (
         <Chart
           gladias={bots}
@@ -30,6 +31,7 @@ const Dashboard = () => {
       ) : (
         'Loading...'
       )}
+      <Bots />
 
       <div></div>
     </div>

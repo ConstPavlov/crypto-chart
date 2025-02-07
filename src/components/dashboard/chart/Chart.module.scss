@@ -1,0 +1,41 @@
+.container {
+  width: 100%;
+  height: 100%;
+  // min-height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  // grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  .percent {
+    font-size: 46px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: #78a659;
+  }
+  .chart {
+    min-width: 420px;
+    max-width: 750px;
+    height: 300px;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.chartText {
+  transform: translate(0, 32px);
+  font-size: 16px;
+  @media (max-width: 600px) {
+    font-size: 14px;
+    transform: translate(0, 16px);
+  }
+  @media (max-width: 400px) {
+    font-size: 13px;
+    transform: translate(0, 8px);
+  }
+}

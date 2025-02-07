@@ -9,13 +9,13 @@ import { HiOutlineShoppingCart } from 'react-icons/hi2';
 import { SlSettings } from 'react-icons/sl';
 import { CiDollar } from 'react-icons/ci';
 import classNames from 'classnames';
+import { usePageStore } from '../../store/usePageStore';
 
 const SideBar = () => {
   const location = useLocation();
-  const [namePage, setNamePagge] = React.useState('/');
+  const { namePage, setNamePage } = usePageStore();
   React.useEffect(() => {
-    const name = location.pathname;
-    setNamePagge(name);
+    setNamePage(location.pathname);
   }, [location.pathname]);
   console.log(location);
   return (
@@ -47,7 +47,7 @@ const SideBar = () => {
           <div className={styles.title}>Megabot</div>
         </Link>
         <Link
-          to="/invest"
+          to="/market"
           className={classNames(
             styles.link,
             namePage === '/invest' && styles.active_tool,
@@ -59,7 +59,7 @@ const SideBar = () => {
           <div className={styles.title}>Bot market</div>
         </Link>
         <Link
-          to="/team"
+          to="/prices"
           className={classNames(
             styles.link,
             namePage === '/team' && styles.active_tool,
