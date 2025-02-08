@@ -1,50 +1,211 @@
-$active_bot: #27364e;
-$box_bot: #252d40;
+@import '../../styles/variables.scss';
 
 .wrapper {
-  padding: 0 30px;
+  margin-bottom: 32px;
   .bots {
+    position: relative;
+    // z-index: 4;
+    padding: 0 32px;
     display: grid;
     grid-template-columns: repeat(3, minmax(226px, 1fr));
     gap: 2px;
-    align-items: center;
     justify-content: center;
     align-items: stretch;
     @media (max-width: 700px) {
-      grid-template-columns: repeat(2, minmax(226px, 1fr));
+      grid-template-columns: repeat(3, minmax(160px, 1fr));
     }
 
-    @media (max-width: 480px) {
-      grid-template-columns: repeat(2, minmax(100px, 1fr));
+    @media (max-width: 500px) {
+      grid-template-columns: repeat(3, minmax(80px, 1fr));
+    }
+    @media (max-width: 380px) {
+      grid-template-columns: repeat(3, minmax(70px, 1fr));
     }
 
     .bot {
-      padding: 37px 2px 35px 2px;
+      position: relative;
+      // z-index: 4;
+      cursor: pointer;
       background-color: $box_bot;
-      // margin-right: 2px;
-      // margin-bottom: 2px;
-      border-radius: 4px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       max-height: 210px;
+      padding: 20px;
+      padding: 37px 0px 35px 0px;
+      overflow: visible;
+      &.bot_active {
+        position: relative;
+        z-index: 4;
+        // background: radial-gradient(circle, #252d3f 60%, #28374f 30%);
+        background: #28374f;
+        // overflow: hidden;
+        transition: background 0.5s ease 0.2s;
+
+        &::before {
+          content: '';
+          position: absolute;
+
+          top: -5%;
+          left: 0%;
+          right: 0%;
+          bottom: -5%;
+
+          background: radial-gradient(circle, #252d3f 60%, transparent 30%);
+          filter: blur(15px);
+          z-index: -1;
+        }
+      }
+
+      @media (max-width: 700px) {
+        padding: 0p 16px;
+      }
+      @media (max-width: 380px) {
+        padding: 8px;
+      }
+
+      .snake_decor {
+        position: absolute;
+        z-index: 5;
+        pointer-events: none;
+        // width: 50px;
+        // height: auto;
+        width: 109px;
+        @media (max-width: 380px) {
+          width: 75px;
+        }
+        img {
+          width: 100%;
+          height: 100%;
+        }
+        &.right_top {
+          top: -20%;
+          right: -22.5%;
+          @media (max-width: 700px) {
+            top: -20%;
+            right: -30.5%;
+          }
+          @media (max-width: 500px) {
+            top: -22%;
+            right: -44.5%;
+          }
+          @media (max-width: 400px) {
+            top: -22%;
+            right: -36.5%;
+          }
+          @media (max-width: 300px) {
+            top: -22%;
+            right: -45.5%;
+          }
+        }
+        &.left_top {
+          top: -22%;
+          right: 80%;
+          @media (max-width: 700px) {
+            top: -23%;
+            right: 72%;
+          }
+          @media (max-width: 500px) {
+            top: -25%;
+            right: 60%;
+          }
+          @media (max-width: 400px) {
+            top: -30%;
+            right: 72%;
+          }
+          @media (max-width: 300px) {
+            top: -28%;
+            right: 60%;
+          }
+        }
+        &.left_bottom {
+          top: 45%;
+          right: 79%;
+          @media (max-width: 700px) {
+            top: 45%;
+            right: 82%;
+          }
+          @media (max-width: 500px) {
+            top: 50%;
+            right: 80%;
+          }
+          @media (max-width: 500px) {
+            top: 53%;
+            right: 60%;
+          }
+        }
+        &.right_bottom {
+          top: 45%;
+          right: -30%;
+          @media (max-width: 700px) {
+            top: 45%;
+            right: -50%;
+          }
+          @media (max-width: 500px) {
+            top: 48%;
+            right: -69%;
+          }
+          @media (max-width: 400px) {
+            top: 49%;
+            right: -45%;
+          }
+          @media (max-width: 300px) {
+            top: 49%;
+            right: -62%;
+          }
+        }
+      }
       .content {
+        position: relative;
+        z-index: 3;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 10px;
+        justify-content: center;
+        // gap: 10px;
+        text-align: center;
 
-        .text {
-          text-align: center;
-          // min-width: 105px;
-          max-width: 150px;
-          font-size: 1.25em;
-        }
-        .icon {
+        .text_content {
           display: flex;
           flex-direction: column;
           align-items: center;
-          min-height: 90px;
+          width: 100%;
+        }
+        .text {
+          color: #fff;
+          text-align: center;
+          // min-width: 105px;
+          max-width: 150px;
+          font-size: 20px;
+          font-weight: 700;
+          @media (max-width: 500px) {
+            font-size: 16px;
+            max-width: 110px;
+          }
+          @media (max-width: 380px) {
+            font-size: 14px;
+          }
+          &.grayText {
+            color: $primary;
+          }
+        }
+        .icon {
+          display: flex;
+          align-items: flex-end;
+          min-height: 70px;
+          height: 90px;
+          width: 90px;
+          margin-bottom: 8px;
+
+          @media (max-width: 500px) {
+            height: 50px;
+            width: 70px;
+          }
+          @media (max-width: 380px) {
+            height: 44px;
+            width: 60px;
+          }
           .img {
             width: 100%;
             height: 100%;
@@ -52,6 +213,21 @@ $box_bot: #252d40;
             // height: 100px;
             max-width: 100%;
             object-fit: contain;
+          }
+        }
+        .percent {
+          font-weight: 700;
+          font-size: 20px;
+          color: $text_green;
+          &.percent_minus {
+            color: $text_red;
+          }
+
+          @media (max-width: 500px) {
+            font-size: 18px;
+          }
+          @media (max-width: 380px) {
+            font-size: 16px;
           }
         }
       }

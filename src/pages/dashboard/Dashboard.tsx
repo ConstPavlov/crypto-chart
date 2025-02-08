@@ -5,35 +5,43 @@ import jsonFile from '../../data.json';
 import { Bot } from '../../shared';
 import Bots from '../../widgets/bots/Bots';
 import TotalAssets from '../../components/dashboard/total-assets/TotalAssets';
+import ChartButtons from '../../widgets/chart-buttons/ChartButtons';
+import { useBotStore } from '../../store/useBotStore';
+import { devtools } from 'zustand/middleware';
 
 const Dashboard = () => {
-  const [period, setPeriod] = React.useState<keyof Bot>('all_time');
-  const [currentBot, setCurrentBot] = React.useState<string>('blue_bot');
-  const [bots, setBots] = React.useState<Bot[]>([]);
+  const {
+    bots,
+    setBots,
+    currentBot,
+    currentBotName,
+    currentPeriod,
+    setCurrentBot,
+    setCurrentBotName,
+  } = useBotStore();
 
   React.useEffect(() => {
     const arrayBotsFromJson = JSON.parse(JSON.stringify(jsonFile));
     setBots(arrayBotsFromJson.bots);
   }, []);
-  console.log(bots, 'is bots');
 
   return (
     <div className={styles.wrapper}>
       <TotalAssets />
-      {bots && bots.length > 0 ? (
+      {bots && bots.length > 0 && currentBot ? (
         <Chart
-          gladias={bots}
+          currentBot={currentBot}
           width={750}
           height={300}
-          selectedPeriod={period}
-          selectedGladias={currentBot}
+          selectedPeriod={currentPeriod}
+          selectedGladias={currentBotName}
         />
       ) : (
         'Loading...'
       )}
       <Bots />
 
-      <div></div>
+      <ChartButtons />
     </div>
   );
 };

@@ -1,0 +1,64 @@
+@import '../../styles/variables.scss';
+.wrapper {
+  margin-bottom: 32px;
+  position: relative;
+  z-index: 3;
+  @media (max-width: 600px) {
+    // margin-bottom: 102px;
+  }
+  .tool {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    // padding: 0px 32px;
+    @media (max-width: 700px) {
+      flex-direction: column;
+      gap: 8px;
+    }
+    .title {
+      color: $primary;
+      font-weight: bold;
+    }
+    .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      @media (max-width: 700px) {
+        // flex-wrap: wrap;
+        gap: 8px;
+      }
+      @media (max-width: 500px) {
+        flex-wrap: wrap;
+      }
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 117px;
+      padding: 8px 16px;
+      border-radius: 30px;
+      font-size: 22px;
+      border: 1px solid #273145;
+      background-color: #1d2537;
+      cursor: pointer;
+      @media (max-width: 700px) {
+        padding: 8px 8px;
+      }
+      @media (max-width: 500px) {
+        flex: 1 1 25%;
+      }
+
+      &:hover {
+        background-color: #3c4965;
+      }
+      &.btn_active {
+        background-color: #232b3d;
+        border: 1px solid #fff;
+        color: #fff;
+      }
+    }
+  }
+}
