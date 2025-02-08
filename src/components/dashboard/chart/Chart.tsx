@@ -146,7 +146,7 @@ const Chart: React.FC<ChartProps> = ({
       if (date instanceof Date) {
         return selectedPeriod === '24h'
           ? d3.timeFormat('%H:%M')(date)
-          : d3.timeFormat('%b %d')(date);
+          : d3.timeFormat('%d.%m')(date);
       }
       return '';
     };
