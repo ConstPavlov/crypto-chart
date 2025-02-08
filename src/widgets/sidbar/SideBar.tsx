@@ -78,7 +78,10 @@ const SideBar = () => {
           )}
         >
           <div className={styles.sidebar__item}>
-            <SlSettings className={styles.ico} />
+            <div className={styles.profile_notice}>{3}</div>
+            <SlSettings
+              className={classNames(styles.ico, styles.iconProfile)}
+            />
           </div>
           <div className={styles.title}>Profile</div>
         </Link>

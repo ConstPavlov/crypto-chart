@@ -5,11 +5,11 @@ import { Bot } from '../../../shared';
 import { generateData } from '../../../helpers/generateBotData';
 import { updateYPeriod } from '../../../helpers/updateYPeriod';
 import { calcPreviousCosts } from '../../../helpers/calcPreviousCosts';
-import { style } from 'd3';
 import styles from './Chart.module.scss';
+import classNames from 'classnames';
 
 interface ChartProps {
-  gladias: Bot[];
+  currentBot: Bot;
   selectedPeriod: keyof Bot;
   selectedGladias: string;
   width?: number;
@@ -18,7 +18,7 @@ interface ChartProps {
 }
 
 const Chart: React.FC<ChartProps> = ({
-  gladias,
+  currentBot,
   selectedPeriod,
   selectedGladias,
   width,
@@ -50,15 +50,11 @@ const Chart: React.FC<ChartProps> = ({
   }, []);
 
   useEffect(() => {
-    if (!gladias.length) return;
-
-    const selectedGladi = gladias.find(item => item.name === selectedGladias);
-
-    if (!selectedGladi) return;
+    if (!currentBot) return;
 
     const { width, height } = dimensions;
 
-    const costData = calcPreviousCosts(selectedGladi, selectedPeriod);
+    const costData = calcPreviousCosts(currentBot, selectedPeriod);
     const midIdx = Math.floor(costData.length / 2);
     const midValue = costData[midIdx];
     // x
@@ -93,7 +89,7 @@ const Chart: React.FC<ChartProps> = ({
       )
       .selectAll('line')
       .attr('stroke', '#1e3b5e')
-      .attr('stroke-width', 0.5)
+      .attr('stroke-width', 1)
       .attr('stroke-dasharray', '2,2');
 
     // Убираем линии выше оси X (если они выходят за пределы графика)
@@ -237,11 +233,15 @@ const Chart: React.FC<ChartProps> = ({
       .attr('cy', y(midValue.cost))
       .attr('r', 5)
       .attr('fill', 'white');
-  }, [gladias, selectedPeriod, selectedGladias, margin]);
+  }, [currentBot, selectedPeriod, selectedGladias, margin]);
 
   return (
     <div ref={containerRef} className={styles.container}>
-      <span className={styles.percent}>+32.6%</span>
+      <span
+        className={classNames(styles.percent, {
+          [styles.percent_minus]: currentBot[selectedPeriod] < 0,
+        })}
+      >{`${currentBot[selectedPeriod]}%`}</span>
       <svg
         preserveAspectRatio="xMinYMin meet"
         ref={svgRef}

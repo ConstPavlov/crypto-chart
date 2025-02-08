@@ -2,6 +2,11 @@
 .wrapper {
   max-height: 150px;
   width: 100%;
+  margin-bottom: 24px;
+
+  @media (max-width: 500px) {
+    margin-bottom: 8px;
+  }
 
   .totalAssets {
     padding: 0px 28px;
@@ -31,6 +36,7 @@
       }
       .right {
         font-size: 53px;
+        color: #ffff;
         @media (max-width: 620px) {
           font-size: 47px;
         }
