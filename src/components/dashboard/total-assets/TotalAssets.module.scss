@@ -40,10 +40,18 @@
         @media (max-width: 620px) {
           font-size: 47px;
         }
+        @media (max-width: 380px) {
+          font-size: 36px;
+        }
       }
       .left {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
         @media (max-width: 620px) {
+          gap: 2px;
         }
+
         .balance {
           font-weight: bold;
           display: flex;
@@ -59,6 +67,11 @@
             margin-right: 12px;
             font-weight: bold;
             color: #ffff;
+            @media (max-width: 380px) {
+              font-size: 20px;
+              margin-left: 8px;
+              margin-right: 4px;
+            }
           }
         }
       }
