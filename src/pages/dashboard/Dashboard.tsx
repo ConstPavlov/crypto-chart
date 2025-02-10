@@ -31,13 +31,11 @@ const Dashboard = () => {
       {bots && bots.length > 0 && currentBot ? (
         <Chart
           currentBot={currentBot}
-          width={750}
-          height={300}
           selectedPeriod={currentPeriod}
           selectedGladias={currentBotName}
         />
       ) : (
-        'Loading...'
+        'Please Select a bot...'
       )}
       <Bots />
 
